@@ -1,0 +1,64 @@
+package enstudy.signup.domain.user.service;
+
+import enstudy.signup.domain.user.dto.request.LoginRequest;
+import enstudy.signup.domain.user.dto.request.SignUpRequest;
+import enstudy.signup.domain.user.entity.User;
+import enstudy.signup.domain.user.repository.UserRepository;
+import enstudy.signup.global.exception.errorcode.UserErrorCode;
+import enstudy.signup.global.exception.exception.UserException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Transactional
+    public int signUp(SignUpRequest signUpRequest){
+
+        // 이미 해당 이메일 유저가 존재한다면 예외 던지기
+        if(userRepository.existsByEmail(signUpRequest.email())){
+            throw new UserException(UserErrorCode.DUPLICATE_EMAIL);
+        }
+
+        User user = User.builder()
+                .email(signUpRequest.email())
+                .username(signUpRequest.username())
+                // 비밀번호는 인코딩하여 저장
+                .password(passwordEncoder.encode(signUpRequest.password()))
+                .build();
+
+        userRepository.save(user);
+
+        return user.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public boolean checkIfEmailAvailable(String email){
+        // 만약 이메일이 중복되었으면 예외 던지기
+        if(userRepository.existsByEmail(email)) {
+            throw new UserException(UserErrorCode.DUPLICATE_EMAIL);
+        }
+
+        return true;
+    }
+
+    @Transactional(readOnly = true)
+    public String login(LoginRequest loginRequest) {
+
+        User user = userRepository.findByEmail(loginRequest.email())
+                // 해당 이메일 유저가 존재하지 않는다면
+                .orElseThrow(() -> new UserException(UserErrorCode.INVALID_EMAIL));
+
+        // 만약 비밀번호가 일치하지 않는다면
+        if(!user.getPassword().equals(loginRequest.password()))
+            throw new UserException(UserErrorCode.INVALID_PASSWORD);
+
+        // 로그인 성공하면 닉네임 반환
+        return user.getUsername();
+    }
+}
