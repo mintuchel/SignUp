@@ -26,10 +26,23 @@ public class MemberService {
         return member.getId();
     }
 
-    // 1. email password 일치 확인
     @Transactional(readOnly = true)
-    public void login(LoginRequest loginRequest){
+    public boolean checkIfEmailAvailable(String email){
+        if(memberRepository.existsByEmail(email)) return false;
 
+        return true;
     }
 
+    // 1. email password 일치 확인
+    // 추후에 password를 인코딩하는 방식으로 바꾸기
+    @Transactional(readOnly = true)
+    public boolean login(LoginRequest loginRequest){
+        Member member = memberRepository.findByEmail(loginRequest.email()).orElseThrow();
+
+        if(member.getPassword().equals(loginRequest.password())){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
