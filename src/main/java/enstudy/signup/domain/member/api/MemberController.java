@@ -21,7 +21,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Integer> signup(SignUpRequest signUpRequest) {
+    public ResponseEntity<Integer> signUp(SignUpRequest signUpRequest) {
         int id = memberService.signUp(signUpRequest);
 
         return ResponseEntity
@@ -29,7 +29,7 @@ public class MemberController {
                 .body(id);
     }
 
-    @GetMapping("/checkIfEmailAvailable")
+    @GetMapping("/checkEmail")
     public ResponseEntity<Boolean> checkIfEmailAvailable(String email) {
         return ResponseEntity
                 .status(HttpStatus.FOUND)
