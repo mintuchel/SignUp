@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.mockito.BDDMockito.given;
@@ -29,7 +30,7 @@ public class SignUpServiceTest {
     private UserRepository userRepository;
 
     @Spy
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Mock
     private User user;
@@ -65,6 +66,7 @@ public class SignUpServiceTest {
 
         // then
         Assertions.assertThat(id).isNotNull();
+        // 함수 호출 여부 확인
         verify(passwordEncoder).encode(signUpRequest.password());
         verify(userRepository).save(any(User.class));
         System.out.println(id);
@@ -84,6 +86,7 @@ public class SignUpServiceTest {
                 .hasFieldOrPropertyWithValue("userErrorCode",UserErrorCode.DUPLICATE_EMAIL);
 
         // then
+        // 함수 미호출 여부 확인
         verify(userRepository, never()).save(any(User.class));
     }
 }
