@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
-@Tag(name = "회원가입/로그인 API", description = "박대원 화이팅 김시원 화이팅")
+@Tag(name = "회원가입/로그인 API", description = "박대원 김시원 신혜연 화이팅")
 public class UserController {
     private final UserService userService;
 
@@ -40,16 +40,22 @@ public class UserController {
     @GetMapping("/checkEmail/{email}")
     @Operation(summary = "이메일 중복 확인")
     public ResponseEntity<Boolean> checkIfEmailAvailable(@PathVariable String email) {
+
+        boolean isAvailable = userService.checkIfEmailAvailable(email);
+
         return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(userService.checkIfEmailAvailable(email));
+                .status(HttpStatus.OK)
+                .body(isAvailable);
     }
 
     @PostMapping("/login")
     @Operation(summary = "로그인")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
+
+        String username = userService.login(loginRequest);
+
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.login(loginRequest));
+                .body(username);
     }
 }
