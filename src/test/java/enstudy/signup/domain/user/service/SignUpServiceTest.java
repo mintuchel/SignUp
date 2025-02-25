@@ -78,7 +78,7 @@ public class SignUpServiceTest {
         // 이메일 중복 상황 가정
         given(userRepository.existsByEmail(signUpRequest.email())).willReturn(true);
 
-        // when
+        // when & then
         Assertions.assertThatThrownBy(() -> userService.signUp(signUpRequest))
                 .isInstanceOf(UserException.class)
                 .hasFieldOrPropertyWithValue("userErrorCode",UserErrorCode.DUPLICATE_EMAIL);
