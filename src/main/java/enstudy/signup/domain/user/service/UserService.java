@@ -30,6 +30,7 @@ public class UserService {
                 .username(signUpRequest.username())
                 // 비밀번호는 인코딩하여 저장
                 .password(passwordEncoder.encode(signUpRequest.password()))
+                .address(signUpRequest.address())
                 .build();
 
         userRepository.save(user);
@@ -55,7 +56,8 @@ public class UserService {
                 .orElseThrow(() -> new UserException(UserErrorCode.INVALID_EMAIL));
 
         // 만약 비밀번호가 일치하지 않는다면
-        if(!user.getPassword().equals(loginRequest.password()))
+        // 같은 평문이어도 실행마다 다른 해시 값을 생성 -> equals로 비교하면 안됨
+        if(!passwordEncoder.matches(loginRequest.password(), user.getPassword()))
             throw new UserException(UserErrorCode.INVALID_PASSWORD);
 
         // 로그인 성공하면 닉네임 반환
