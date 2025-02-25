@@ -7,7 +7,6 @@ import enstudy.signup.global.exception.errorcode.UserErrorCode;
 import enstudy.signup.global.exception.exception.UserException;
 import net.datafaker.Faker;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
