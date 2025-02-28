@@ -1,5 +1,6 @@
 package enstudy.signup.domain.user.service;
 
+import enstudy.signup.domain.user.dto.request.CheckEmailRequest;
 import enstudy.signup.domain.user.dto.request.LoginRequest;
 import enstudy.signup.domain.user.dto.request.SignUpRequest;
 import enstudy.signup.domain.user.entity.User;
@@ -39,9 +40,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public boolean checkIfEmailAvailable(String email){
+    public boolean checkIfEmailAvailable(CheckEmailRequest checkEmailRequest){
         // 만약 이메일이 중복되었으면 예외 던지기
-        if(userRepository.existsByEmail(email)) {
+        if(userRepository.existsByEmail(checkEmailRequest.email())) {
             throw new UserException(UserErrorCode.DUPLICATE_EMAIL);
         }
 

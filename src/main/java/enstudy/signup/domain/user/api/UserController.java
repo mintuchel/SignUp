@@ -1,5 +1,6 @@
 package enstudy.signup.domain.user.api;
 
+import enstudy.signup.domain.user.dto.request.CheckEmailRequest;
 import enstudy.signup.domain.user.dto.request.LoginRequest;
 import enstudy.signup.domain.user.dto.request.SignUpRequest;
 import enstudy.signup.domain.user.service.UserService;
@@ -37,11 +38,10 @@ public class UserController {
                 .body(id);
     }
 
-    @GetMapping("/checkEmail/{email}")
+    @PostMapping("/checkEmail")
     @Operation(summary = "이메일 중복 확인")
-    public ResponseEntity<Boolean> checkIfEmailAvailable(@PathVariable String email) {
-
-        boolean isAvailable = userService.checkIfEmailAvailable(email);
+    public ResponseEntity<Boolean> checkIfEmailAvailable(@Valid @RequestBody CheckEmailRequest checkEmailRequest) {
+        boolean isAvailable = userService.checkIfEmailAvailable(checkEmailRequest);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -51,7 +51,6 @@ public class UserController {
     @PostMapping("/login")
     @Operation(summary = "로그인")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
-
         String username = userService.login(loginRequest);
 
         return ResponseEntity
