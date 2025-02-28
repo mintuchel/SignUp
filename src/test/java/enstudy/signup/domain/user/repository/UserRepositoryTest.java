@@ -37,10 +37,10 @@ public class UserRepositoryTest {
         userRepository.save(user);
 
         // then
-        System.out.println(user.getId());
-        System.out.println(user.getUsername());
-        System.out.println(user.getPassword());
-        System.out.println(user.getAddress());
+//        System.out.println(user.getId());
+//        System.out.println(user.getUsername());
+//        System.out.println(user.getPassword());
+//        System.out.println(user.getAddress());
 
         Assertions.assertThat(user.getId()).isNotNull();
     }
