@@ -31,7 +31,11 @@ public class User {
     @Column(nullable = false)
     private String username;
 
-    // 주소
-    @Column(nullable = false)
-    private String address;
+    // 도로명주소
+    @Column(name = "street_address", nullable = false)
+    private String streetAddress;
+
+    // 상세주소
+    @Column(name = "detail_address", nullable = false)
+    private String detailAddress;
 }

@@ -44,12 +44,14 @@ public class SignUpServiceTest {
         String email = faker.internet().emailAddress();
         String password = faker.internet().password();
         String username = faker.name().firstName();
-        String address = faker.address().fullAddress();
+        String streetAddress = faker.address().streetAddress();
+        String detailAddress = faker.address().secondaryAddress();
 
         given(signUpRequest.email()).willReturn(email);
         given(signUpRequest.password()).willReturn(password);
         given(signUpRequest.username()).willReturn(username);
-        given(signUpRequest.address()).willReturn(address);
+        given(signUpRequest.streetAddress()).willReturn(streetAddress);
+        given(signUpRequest.detailAddress()).willReturn(detailAddress);
     }
 
 

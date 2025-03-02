@@ -25,7 +25,8 @@ public class UserRepositoryTest {
                 .email(faker.internet().emailAddress())
                 .username(faker.name().firstName())
                 .password(faker.internet().password())
-                .address(faker.address().streetAddress())
+                .streetAddress(faker.address().streetAddress())
+                .detailAddress(faker.address().secondaryAddress())
                 .build();
     }
 

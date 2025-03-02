@@ -31,7 +31,8 @@ public class UserService {
                 .username(signUpRequest.username())
                 // 비밀번호는 인코딩하여 저장
                 .password(passwordEncoder.encode(signUpRequest.password()))
-                .address(signUpRequest.address())
+                .streetAddress(signUpRequest.streetAddress())
+                .detailAddress(signUpRequest.detailAddress())
                 .build();
 
         userRepository.save(user);

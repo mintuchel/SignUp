@@ -18,7 +18,11 @@ public record SignUpRequest(
         @Size(message = "닉네임은 2자 이상 10자 이하여야 합니다.", min = 2, max = 10)
         String username,
 
-        @NotBlank(message = "주소는 필수 입력 값입니다")
-        @Size(message = "주소는 50자를 넘을 수 없습니다.", max = 50)
-        String address
+        @NotBlank(message = "도로명주소는 필수 입력 값입니다")
+        @Size(message = "도로명주소는 30자를 넘을 수 없습니다.", max = 50)
+        String streetAddress,
+
+        @NotBlank(message = "상세주소는 필수 입력 값입니다")
+        @Size(message = "상세주소는 30자를 넘을 수 없습니다.", max = 50)
+        String detailAddress
 ) { }
