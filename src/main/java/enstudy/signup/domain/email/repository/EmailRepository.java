@@ -8,16 +8,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Repository
-public interface EmailRepository extends JpaRepository<Email, Integer> {
-    Optional<Email> findByEmail(String email);
-
-    boolean existsByEmail(String email); // 이메일 존재 여부 확인
-
+public interface EmailRepository extends JpaRepository<Email, String> {
     @Modifying
     @Transactional
     @Query("UPDATE Email e SET e.code = :code WHERE e.email = :email")
-    void updateCodeByEmail(@Param("email") String email, @Param("code") String code);
+    void updateCodeById(@Param("email") String email, @Param("code") String code);
 }

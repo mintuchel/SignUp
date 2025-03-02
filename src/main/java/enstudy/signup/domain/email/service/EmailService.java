@@ -14,9 +14,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +23,8 @@ public class EmailService {
     private final EmailRepository emailRepository;
 
     private final JavaMailSender emailSender;
+
+    private static final SecureRandom secureRandom = new SecureRandom();
 
     @Transactional
     public void sendCodeToEmail(EmailRequest emailRequest){
@@ -35,10 +35,10 @@ public class EmailService {
         // redisService.setValues(AUTH_CODE_PREFIX + toEmail, authCode, Duration.ofMillis(this.authCodeExpirationMillis));
 
         // 이미 존재한다면 최근 코드로 갱신
-        boolean doesExist = emailRepository.existsByEmail(emailRequest.email());
+        boolean doesExist = emailRepository.existsById(emailRequest.email());
 
         if(doesExist){
-            emailRepository.updateCodeByEmail(emailRequest.email(), createdCode);
+            emailRepository.updateCodeById(emailRequest.email(), createdCode);
             return;
         }
 
@@ -74,40 +74,24 @@ public class EmailService {
             helper.setReplyTo("ensharp@gmail.com");
 
             emailSender.send(message);
-        } catch (MessagingException e) {
-            // 예외 발생 시 로그 남기기
-            System.err.println("이메일 전송 중 오류 발생: " + e.getMessage());
+        } catch (RuntimeException | MessagingException e) {
+            // 메시지 전송 시 에러 터지면 서버 에러임
             throw new EmailException(EmailErrorCode.MESSAGING_ERROR);
-        } catch (RuntimeException e) {
-            System.err.println("Runtime 예외 발생: " + e.getMessage());
-            e.printStackTrace();
-            throw new RuntimeException("이메일 전송 실패", e);
         }
     }
 
+    // SecureRandom 이용해서 6자리 인증코드 생성
     private String createVerificationCode() {
-        int length = 6;
-        try {
-            Random random = SecureRandom.getInstanceStrong();
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < length; i++) {
-                builder.append(random.nextInt(10));
-            }
-            return builder.toString();
-        } catch (NoSuchAlgorithmException e) {
-            // throw new BusinessLogicException(ExceptionCode.NO_SUCH_ALGORITHM);
-            throw new RuntimeException(e);
-        }
+        return String.format("%06d", secureRandom.nextInt(1000000));
     }
 
     @Transactional(readOnly = true)
     public void verify(EmailVerificationRequest emailVerificationRequest) {
 
-        Email email = emailRepository.findByEmail(emailVerificationRequest.email())
+        Email email = emailRepository.findById(emailVerificationRequest.email())
                 .orElseThrow(() -> new EmailException(EmailErrorCode.INVALID_EMAIL));
 
-        if(!email.getCode().equals(emailVerificationRequest.code())){
+        if(!email.getCode().equals(emailVerificationRequest.code()))
             throw new EmailException(EmailErrorCode.INVALID_CODE);
-        }
     }
 }

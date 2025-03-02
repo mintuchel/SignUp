@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
                 .body(e.getEmailErrorCode().getMessage());
     }
 
-    // Validation 관련 에러 처리
+    // Jakarta Validation 관련 에러 처리 (DTO 형식 관련)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
