@@ -15,7 +15,7 @@ public record SignUpRequest(
         String password,
 
         @NotBlank(message = "닉네임은 필수 입력 값입니다.")
-        @Size(message = "닉네임은 3자 이상 10자 이하여야 합니다.", min = 3, max = 10)
+        @Size(message = "닉네임은 2자 이상 10자 이하여야 합니다.", min = 2, max = 10)
         String username,
 
         @NotBlank(message = "주소는 필수 입력 값입니다")
