@@ -1,5 +1,6 @@
 package enstudy.signup.domain.user.service;
 
+import enstudy.signup.domain.user.dto.request.ChangePasswordRequest;
 import enstudy.signup.domain.user.dto.request.CheckEmailRequest;
 import enstudy.signup.domain.user.dto.request.LoginRequest;
 import enstudy.signup.domain.user.dto.request.SignUpRequest;
@@ -64,5 +65,17 @@ public class UserService {
 
         // 로그인 성공하면 닉네임 반환
         return user.getUsername();
+    }
+
+    @Transactional
+    public void changePassword(ChangePasswordRequest changePasswordRequest) {
+        // 새로운 password 인코딩해주기
+        String newPassword = passwordEncoder.encode(changePasswordRequest.password());
+
+        int rows = userRepository.updatePasswordByEmail(changePasswordRequest.email(), newPassword);
+
+        // 업데이트 된 행이 없다면
+        if(rows == 0)
+            throw new UserException(UserErrorCode.PASSWORD_UPDATE_FAILURE);
     }
 }

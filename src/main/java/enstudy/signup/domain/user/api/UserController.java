@@ -1,5 +1,6 @@
 package enstudy.signup.domain.user.api;
 
+import enstudy.signup.domain.user.dto.request.ChangePasswordRequest;
 import enstudy.signup.domain.user.dto.request.CheckEmailRequest;
 import enstudy.signup.domain.user.dto.request.LoginRequest;
 import enstudy.signup.domain.user.dto.request.SignUpRequest;
@@ -56,5 +57,17 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(username);
+    }
+
+    // RESTful 방식에서는 왜 noContent로 보내는 것이 적합하다고 하는 것일까
+    // 200 + body에 메시지 담아서 보내줘도 되는데
+    // 그냥 HttpStatus로 명확하게 얘기하는게 목표라서 그런 것일까??
+    @PatchMapping("/password")
+    @Operation(summary = "비밀번호 변경")
+    public ResponseEntity<String> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+        userService.changePassword(changePasswordRequest);
+
+        // HttpStatus 204로 반환
+        return ResponseEntity.noContent().build();
     }
 }
