@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -37,12 +38,30 @@ public class UserRepositoryTest {
         // when
         userRepository.save(user);
 
-        // then
-//        System.out.println(user.getId());
-//        System.out.println(user.getUsername());
-//        System.out.println(user.getPassword());
-//        System.out.println(user.getAddress());
-
         Assertions.assertThat(user.getId()).isNotNull();
     }
+
+//    @Test
+//    @Transactional
+//    public void changePasswordSuccess() {
+//        userRepository.save(user);
+//        userRepository.flush();
+//        System.out.println(user.getEmail());
+//        System.out.println(user.getPassword());
+//        System.out.println(user.getUsername());
+//        System.out.println(user.getDetailAddress());
+//
+//        String newPassword = faker.internet().password();
+//
+//        userRepository.updatePasswordByEmail(user.getEmail(), newPassword);
+//        userRepository.flush();
+//
+//        User updatedUser = userRepository.findByEmail(user.getEmail()).orElseThrow();
+//        System.out.println(updatedUser.getEmail());
+//        System.out.println(updatedUser.getPassword());
+//        System.out.println(updatedUser.getUsername());
+//        System.out.println(updatedUser.getDetailAddress());
+//
+//        Assertions.assertThat(updatedUser.getPassword()).isEqualTo(newPassword);
+//    }
 }
