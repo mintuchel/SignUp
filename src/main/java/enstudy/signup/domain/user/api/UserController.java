@@ -32,31 +32,25 @@ public class UserController {
     @PostMapping("/signup")
     @Operation(summary = "회원가입")
     public ResponseEntity<Integer> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        int id = userService.signUp(signUpRequest);
-
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(id);
+                .body(userService.signUp(signUpRequest));
     }
 
-    @PostMapping("/checkEmail")
+    @PostMapping("/email-check")
     @Operation(summary = "이메일 중복 확인")
-    public ResponseEntity<Boolean> checkIfEmailAvailable(@Valid @RequestBody CheckEmailRequest checkEmailRequest) {
-        boolean isAvailable = userService.checkIfEmailAvailable(checkEmailRequest);
-
+    public ResponseEntity<String> checkIfEmailAvailable(@Valid @RequestBody CheckEmailRequest checkEmailRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(isAvailable);
+                .body(userService.checkIfEmailAvailable(checkEmailRequest));
     }
 
     @PostMapping("/login")
     @Operation(summary = "로그인")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
-        String username = userService.login(loginRequest);
-
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(username);
+                .body(userService.login(loginRequest));
     }
 
     // RESTful 방식에서는 왜 noContent로 보내는 것이 적합하다고 하는 것일까

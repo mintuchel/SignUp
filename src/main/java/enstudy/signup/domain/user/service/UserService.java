@@ -42,13 +42,13 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public boolean checkIfEmailAvailable(CheckEmailRequest checkEmailRequest){
+    public String checkIfEmailAvailable(CheckEmailRequest checkEmailRequest){
         // 만약 이메일이 중복되었으면 예외 던지기
         if(userRepository.existsByEmail(checkEmailRequest.email())) {
             throw new UserException(UserErrorCode.DUPLICATE_EMAIL);
         }
 
-        return true;
+        return "사용 가능한 이메일입니다";
     }
 
     @Transactional(readOnly = true)
