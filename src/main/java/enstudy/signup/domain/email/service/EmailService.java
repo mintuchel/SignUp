@@ -27,32 +27,35 @@ public class EmailService {
     private static final SecureRandom secureRandom = new SecureRandom();
 
     @Transactional
-    public void sendCodeToEmail(EmailRequest emailRequest){
+    public String sendVerificationCode(EmailRequest emailRequest){
         String createdCode = createVerificationCode();
-        sendCode(emailRequest, createdCode);
-
-        // 이메일 인증 요청 시 인증 번호 Redis에 저장 ( key = "AuthCode " + Email / value = AuthCode )
-        // redisService.setValues(AUTH_CODE_PREFIX + toEmail, authCode, Duration.ofMillis(this.authCodeExpirationMillis));
+        sendVerificationCodeMail(emailRequest, createdCode);
 
         // 이미 존재한다면 최근 코드로 갱신
         boolean doesExist = emailRepository.existsById(emailRequest.email());
 
         if(doesExist){
             emailRepository.updateCodeById(emailRequest.email(), createdCode);
-            return;
+        }else {
+            // 일단 Redis 안쓰고 DB에만 저장
+            Email mail = Email.builder()
+                    .email(emailRequest.email())
+                    .code(createdCode)
+                    .build();
+
+            emailRepository.save(mail);
         }
 
-        // 일단 Redis 안쓰고 DB에만 저장
-
-        Email mail = Email.builder()
-                .email(emailRequest.email())
-                .code(createdCode)
-                .build();
-
-        emailRepository.save(mail);
+        return "인증 번호가 발송되었습니다";
     }
 
-    private void sendCode(EmailRequest emailRequest, String createdCode){
+    // SecureRandom 이용해서 6자리 인증코드 생성
+    private String createVerificationCode() {
+        return String.format("%06d", secureRandom.nextInt(1000000));
+    }
+
+    // 생성된 인증코드를 바탕으로 실제로 메일을 보내주는 함수
+    private void sendVerificationCodeMail(EmailRequest emailRequest, String createdCode){
         String title = "En# SignUp 이메일 인증 번호";
 
         String content = "<html>"
@@ -80,18 +83,15 @@ public class EmailService {
         }
     }
 
-    // SecureRandom 이용해서 6자리 인증코드 생성
-    private String createVerificationCode() {
-        return String.format("%06d", secureRandom.nextInt(1000000));
-    }
-
     @Transactional(readOnly = true)
-    public void verify(EmailVerificationRequest emailVerificationRequest) {
+    public String verify(EmailVerificationRequest emailVerificationRequest) {
 
         Email email = emailRepository.findById(emailVerificationRequest.email())
                 .orElseThrow(() -> new EmailException(EmailErrorCode.INVALID_EMAIL));
 
         if(!email.getCode().equals(emailVerificationRequest.code()))
             throw new EmailException(EmailErrorCode.INVALID_CODE);
+
+        return "인증 번호가 확인되었습니다.";
     }
 }

@@ -24,21 +24,16 @@ public class EmailController {
     @PostMapping("/request")
     @Operation(summary = "이메일 인증 번호 전송")
     public ResponseEntity<String> sendVerificationCode(@Valid @RequestBody EmailRequest emailRequest) {
-        emailService.sendCodeToEmail(emailRequest);
-
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("인증 번호가 발송되었습니다.");
+                .body(emailService.sendVerificationCode(emailRequest));
     }
 
     @PostMapping("/confirm")
     @Operation(summary = "이메일 인증")
     public ResponseEntity<String> verifyCode(@Valid @RequestBody EmailVerificationRequest emailVerificationRequest) {
-
-        emailService.verify(emailVerificationRequest);
-
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("인증 번호가 확인되었습니다.");
+                .body(emailService.verify(emailVerificationRequest));
     }
 }
