@@ -26,6 +26,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/v1/user/**").permitAll() // 모든 컨트롤러 공개
                         .requestMatchers("/api/v1/email/**").permitAll()
+                        .requestMatchers("/api/v1/admin/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // swagger 외부 공개
                         .anyRequest().authenticated() // 나머지는 인증 필요
                 )
