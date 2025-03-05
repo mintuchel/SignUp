@@ -47,7 +47,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/email/{email}")
-    @Operation(summary = "인증 요청한 이메일 삭제")
+    @Operation(summary = "이메일 인증 기록 삭제")
     public ResponseEntity<Void> deleteEmail(@PathVariable String email) {
         adminService.deleteEmail(email);
 

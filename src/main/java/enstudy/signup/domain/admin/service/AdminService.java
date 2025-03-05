@@ -46,6 +46,10 @@ public class AdminService {
 
     @Transactional
     public void deleteUserByEmail(String email) {
+
+        // 여기서는 existsByEmail 보다 findByEmail 을 사용하는 것이 좋음
+        // 만약 존재한다면 바로 user 객체를 userRepository.delete(user); 이렇게 사용하면 되기 때문
+
         User user = userRepository.findByEmail(email)
                 // 해당 이메일 유저가 존재하지 않는다면
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
