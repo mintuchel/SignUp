@@ -12,7 +12,6 @@ import enstudy.signup.domain.user.entity.User;
 // from = 객체를 기반으로 생성
 public record UserInfoResponse (
         String email,
-        String password,
         String username,
         String streetAddress,
         String detailAddress
@@ -20,7 +19,6 @@ public record UserInfoResponse (
     public static UserInfoResponse from(User user) {
         return new UserInfoResponse(
                 user.getEmail(),
-                user.getPassword(),
                 user.getUsername(),
                 user.getStreetAddress(),
                 user.getDetailAddress()
