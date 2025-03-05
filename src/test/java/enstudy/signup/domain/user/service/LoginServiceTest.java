@@ -94,7 +94,7 @@ public class LoginServiceTest {
         // when & then
         Assertions.assertThatThrownBy(() -> userService.login(loginRequest))
                 .isInstanceOf(UserException.class)
-                .hasFieldOrPropertyWithValue("userErrorCode", UserErrorCode.INVALID_EMAIL);
+                .hasFieldOrPropertyWithValue("userErrorCode", UserErrorCode.USER_NOT_FOUND);
 
         // then
         // 해당 함수 미호출 확인

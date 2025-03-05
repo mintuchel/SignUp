@@ -56,7 +56,7 @@ public class UserService {
 
         User user = userRepository.findByEmail(loginRequest.email())
                 // 해당 이메일 유저가 존재하지 않는다면
-                .orElseThrow(() -> new UserException(UserErrorCode.INVALID_EMAIL));
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
 
         // 만약 비밀번호가 일치하지 않는다면
         // 같은 평문이어도 실행마다 다른 해시 값을 생성 -> equals로 비교하면 안됨

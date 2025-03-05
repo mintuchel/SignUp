@@ -86,9 +86,12 @@ public class EmailService {
     @Transactional(readOnly = true)
     public String verify(EmailVerificationRequest emailVerificationRequest) {
 
+        // 이메일 인증 테이블에 이메일이 존재하지 않는다면
+        // 애초에 인증코드가 전송된 적이 없다는 뜻
         Email email = emailRepository.findById(emailVerificationRequest.email())
-                .orElseThrow(() -> new EmailException(EmailErrorCode.INVALID_EMAIL));
+                .orElseThrow(() -> new EmailException(EmailErrorCode.CODE_NOT_SENT));
 
+        // 만약에 코드가 일치하지 않는다면
         if(!email.getCode().equals(emailVerificationRequest.code()))
             throw new EmailException(EmailErrorCode.INVALID_CODE);
 

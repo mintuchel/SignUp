@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum EmailErrorCode {
 
-    INVALID_EMAIL(HttpStatus.NOT_FOUND, "해당 메일로 인증 코드가 전송된 기록이 없습니다"),
+    CODE_NOT_SENT(HttpStatus.NOT_FOUND, "해당 메일로 인증 코드가 전송된 기록이 없습니다"),
     INVALID_CODE(HttpStatus.BAD_REQUEST, "인증 번호가 일치하지 않습니다"),
     MESSAGING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "메시지 전송 중 에러 발생");
 
