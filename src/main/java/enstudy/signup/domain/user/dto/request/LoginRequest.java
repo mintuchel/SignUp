@@ -8,7 +8,9 @@ import jakarta.validation.constraints.NotBlank;
 public record LoginRequest(
         @Email(message = "유효한 이메일 형식을 입력하세요.")
         @NotBlank(message = "이메일은 필수 입력 값입니다.")
+        @Schema(description = "이메일 주소", example = "ensharp25@naver.com")
         String email,
         @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
+        @Schema(description = "비밀번호", example = "ensharp25화이팅")
         String password
 ) { }
