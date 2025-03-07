@@ -1,6 +1,7 @@
 package enstudy.signup.domain.admin.dto.response;
 
 import enstudy.signup.domain.user.entity.User;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 // responsedto에 정적 팩토리 메서드 사용
 // record 내부에 static으로 생성자같은 함수를 집어넣는 디자인 패턴
@@ -10,6 +11,7 @@ import enstudy.signup.domain.user.entity.User;
 // of 랑 from 은 정적 팩토리 메서드에서 자주 쓰이는 네이밍 컨벤션이라고 한다
 // of = 명시적인 값들을 기반으로 객체 생성
 // from = 객체를 기반으로 생성
+@Schema(description = "유저 정보 응답")
 public record UserInfoResponse (
         String email,
         String username,

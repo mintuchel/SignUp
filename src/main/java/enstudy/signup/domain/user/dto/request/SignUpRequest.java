@@ -1,9 +1,11 @@
 package enstudy.signup.domain.user.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+@Schema(description = "회원가입 요청")
 public record SignUpRequest(
         // 내부적인 정규식으로 통해 email 형식인지 판단
         @Email(message = "유효한 이메일 형식을 입력하세요.")

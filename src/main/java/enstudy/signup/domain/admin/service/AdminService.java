@@ -1,8 +1,8 @@
 package enstudy.signup.domain.admin.service;
 
 import enstudy.signup.domain.admin.dto.response.UserInfoResponse;
-import enstudy.signup.domain.email.entity.Email;
-import enstudy.signup.domain.email.repository.EmailRepository;
+import enstudy.signup.domain.emailverification.entity.EmailVerification;
+import enstudy.signup.domain.emailverification.repository.EmailVerificationRepository;
 import enstudy.signup.domain.user.entity.User;
 import enstudy.signup.domain.user.repository.UserRepository;
 import enstudy.signup.global.exception.errorcode.EmailErrorCode;
@@ -20,7 +20,7 @@ import java.util.List;
 public class AdminService {
     // 근데 지금 생각드는건데 왜 @RequiredArgsConstructor가 작동하려면 꼭 final로 정의해야하는걸까??
     private final UserRepository userRepository;
-    private final EmailRepository emailRepository;
+    private final EmailVerificationRepository emailVerificationRepository;
 
     @Transactional(readOnly = true)
     public UserInfoResponse getUserByEmail(String email) {
@@ -61,9 +61,9 @@ public class AdminService {
     public void deleteEmail(String email) {
         // 이메일 인증 테이블에 이메일이 존재하지 않는다면
         // 애초에 인증코드가 전송된 적이 없다는 뜻
-        Email targetEmail = emailRepository.findById(email)
+        EmailVerification targetEmailVerification = emailVerificationRepository.findById(email)
                 .orElseThrow(() -> new EmailException(EmailErrorCode.CODE_NOT_SENT));
 
-        emailRepository.delete(targetEmail);
+        emailVerificationRepository.delete(targetEmailVerification);
     }
 }

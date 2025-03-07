@@ -1,8 +1,8 @@
 package enstudy.signup.domain.admin.service;
 
 import enstudy.signup.domain.admin.dto.response.UserInfoResponse;
-import enstudy.signup.domain.email.entity.Email;
-import enstudy.signup.domain.email.repository.EmailRepository;
+import enstudy.signup.domain.emailverification.entity.EmailVerification;
+import enstudy.signup.domain.emailverification.repository.EmailVerificationRepository;
 import enstudy.signup.domain.user.entity.User;
 import enstudy.signup.domain.user.repository.UserRepository;
 import net.datafaker.Faker;
@@ -29,13 +29,13 @@ public class AdminServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private EmailRepository emailRepository;
+    private EmailVerificationRepository emailVerificationRepository;
 
     @Mock
     private User user1, user2;
 
     @Mock
-    private Email email;
+    private EmailVerification emailVerification;
 
     private final Faker faker = new Faker();
 
@@ -88,12 +88,12 @@ public class AdminServiceTest {
     public void deleteEmailSuccess(){
         // given
         String targetEmail = faker.internet().emailAddress();
-        given(emailRepository.findById(targetEmail)).willReturn(Optional.of(email));
+        given(emailVerificationRepository.findById(targetEmail)).willReturn(Optional.of(emailVerification));
 
         // when
         adminService.deleteEmail(targetEmail);
 
         // then
-        verify(emailRepository).delete(email);
+        verify(emailVerificationRepository).delete(emailVerification);
     }
 }

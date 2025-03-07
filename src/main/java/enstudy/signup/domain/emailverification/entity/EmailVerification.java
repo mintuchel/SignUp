@@ -1,4 +1,4 @@
-package enstudy.signup.domain.email.entity;
+package enstudy.signup.domain.emailverification.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,10 +11,12 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Email {
+@Table(name = "email_verification")
+public class EmailVerification {
     @Id
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    private String code;
+    @Column(name = "verification_code", nullable = false)
+    private String verificationCode;
 }

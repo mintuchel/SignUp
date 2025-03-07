@@ -1,9 +1,9 @@
-package enstudy.signup.domain.email.service;
+package enstudy.signup.domain.emailverification.service;
 
-import enstudy.signup.domain.email.dto.EmailRequest;
-import enstudy.signup.domain.email.dto.EmailVerificationRequest;
-import enstudy.signup.domain.email.entity.Email;
-import enstudy.signup.domain.email.repository.EmailRepository;
+import enstudy.signup.domain.emailverification.dto.VerificationCodeRequest;
+import enstudy.signup.domain.emailverification.dto.EmailVerificationRequest;
+import enstudy.signup.domain.emailverification.entity.EmailVerification;
+import enstudy.signup.domain.emailverification.repository.EmailVerificationRepository;
 import enstudy.signup.global.exception.errorcode.EmailErrorCode;
 import enstudy.signup.global.exception.exception.EmailException;
 import jakarta.mail.MessagingException;
@@ -18,32 +18,32 @@ import java.security.SecureRandom;
 
 @Service
 @RequiredArgsConstructor
-public class EmailService {
+public class EmailVerificationService {
 
-    private final EmailRepository emailRepository;
+    private final EmailVerificationRepository emailVerificationRepository;
 
     private final JavaMailSender emailSender;
 
     private static final SecureRandom secureRandom = new SecureRandom();
 
     @Transactional
-    public String sendVerificationCode(EmailRequest emailRequest){
+    public String sendVerificationCode(VerificationCodeRequest verificationCodeRequest){
         String createdCode = createVerificationCode();
-        sendVerificationCodeMail(emailRequest, createdCode);
+        sendVerificationCodeMail(verificationCodeRequest, createdCode);
 
         // 이미 존재한다면 최근 코드로 갱신
-        boolean doesExist = emailRepository.existsById(emailRequest.email());
+        boolean doesExist = emailVerificationRepository.existsById(verificationCodeRequest.email());
 
         if(doesExist){
-            emailRepository.updateCodeById(emailRequest.email(), createdCode);
+            emailVerificationRepository.updateCodeById(verificationCodeRequest.email(), createdCode);
         }else {
             // 일단 Redis 안쓰고 DB에만 저장
-            Email mail = Email.builder()
-                    .email(emailRequest.email())
-                    .code(createdCode)
+            EmailVerification mail = EmailVerification.builder()
+                    .email(verificationCodeRequest.email())
+                    .verificationCode(createdCode)
                     .build();
 
-            emailRepository.save(mail);
+            emailVerificationRepository.save(mail);
         }
 
         return "인증 번호가 발송되었습니다";
@@ -55,7 +55,7 @@ public class EmailService {
     }
 
     // 생성된 인증코드를 바탕으로 실제로 메일을 보내주는 함수
-    private void sendVerificationCodeMail(EmailRequest emailRequest, String createdCode){
+    private void sendVerificationCodeMail(VerificationCodeRequest verificationCodeRequest, String createdCode){
         String title = "En# SignUp 이메일 인증 번호";
 
         String content = "<html>"
@@ -71,7 +71,7 @@ public class EmailService {
         try {
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setTo(emailRequest.email());
+            helper.setTo(verificationCodeRequest.email());
             helper.setSubject(title);
             helper.setText(content, true);
             helper.setReplyTo("ensharp@gmail.com");
@@ -88,11 +88,11 @@ public class EmailService {
 
         // 이메일 인증 테이블에 이메일이 존재하지 않는다면
         // 애초에 인증코드가 전송된 적이 없다는 뜻
-        Email email = emailRepository.findById(emailVerificationRequest.email())
+        EmailVerification emailVerification = emailVerificationRepository.findById(emailVerificationRequest.email())
                 .orElseThrow(() -> new EmailException(EmailErrorCode.CODE_NOT_SENT));
 
         // 만약에 코드가 일치하지 않는다면
-        if(!email.getCode().equals(emailVerificationRequest.code()))
+        if(!emailVerification.getVerificationCode().equals(emailVerificationRequest.verificationCode()))
             throw new EmailException(EmailErrorCode.INVALID_CODE);
 
         return "인증 번호가 확인되었습니다.";
