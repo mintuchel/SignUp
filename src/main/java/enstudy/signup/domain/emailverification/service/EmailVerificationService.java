@@ -61,6 +61,7 @@ public class EmailVerificationService {
         String content = "<html>"
                 + "<body>"
                 + "<h1>이메일 인증 코드: " + createdCode + "</h1>"
+                + "<br>"
                 + "<p>해당 코드를 홈페이지에 입력하세요.</p>"
                 + "<footer style='color: grey; font-size: small;'>"
                 + "<p>※본 메일은 자동응답 메일이므로 본 메일에 회신하지 마시기 바랍니다.</p>"
