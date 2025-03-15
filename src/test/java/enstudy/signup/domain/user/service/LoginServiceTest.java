@@ -76,7 +76,7 @@ public class LoginServiceTest {
         given(userRepository.findByEmail(loginRequest.email())).willReturn(Optional.of(user));
 
         // when
-        String name = userService.login(loginRequest);
+        String name = userService.login(loginRequest).getUsername();
 
         // then
         Assertions.assertThat(name).isEqualTo(user.getUsername());

@@ -52,7 +52,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public String login(LoginRequest loginRequest) {
+    public User login(LoginRequest loginRequest) {
 
         User user = userRepository.findByEmail(loginRequest.email())
                 // 해당 이메일 유저가 존재하지 않는다면
@@ -64,7 +64,7 @@ public class UserService {
             throw new UserException(UserErrorCode.INVALID_PASSWORD);
 
         // 로그인 성공하면 닉네임 반환
-        return user.getUsername();
+        return user;
     }
 
     @Transactional

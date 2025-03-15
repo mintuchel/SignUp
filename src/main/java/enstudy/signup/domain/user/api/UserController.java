@@ -50,7 +50,7 @@ public class UserController {
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.login(loginRequest));
+                .body(userService.login(loginRequest).getUsername());
     }
 
     // RESTful 방식에서는 왜 noContent로 보내는 것이 적합하다고 하는 것일까
