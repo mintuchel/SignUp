@@ -55,7 +55,7 @@ public class EmailVerificationService {
     }
 
     // 생성된 인증코드를 바탕으로 실제로 메일을 보내주는 함수
-    private void sendVerificationCodeMail(VerificationCodeRequest verificationCodeRequest, String createdCode){
+    public void sendVerificationCodeMail(VerificationCodeRequest verificationCodeRequest, String createdCode){
         String title = "En# SignUp 이메일 인증 번호";
 
         String content = "<html>"
