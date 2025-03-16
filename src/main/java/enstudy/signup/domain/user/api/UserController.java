@@ -1,5 +1,6 @@
 package enstudy.signup.domain.user.api;
 
+import enstudy.signup.domain.admin.dto.response.UserInfoResponse;
 import enstudy.signup.domain.user.dto.request.ChangePasswordRequest;
 import enstudy.signup.domain.user.dto.request.CheckEmailRequest;
 import enstudy.signup.domain.user.dto.request.LoginRequest;
@@ -28,6 +29,14 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "회원가입/로그인 API", description = "박대원 김시원 신혜연 화이팅")
 public class UserController {
     private final UserService userService;
+
+    @GetMapping("/{email}")
+    @Operation(summary = "특정 유저 조회")
+    public ResponseEntity<UserInfoResponse> getUserByEmail(@PathVariable String email) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.getUserByEmail(email));
+    }
 
     @PostMapping("/signup")
     @Operation(summary = "회원가입")

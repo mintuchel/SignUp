@@ -1,5 +1,6 @@
 package enstudy.signup.domain.user.service;
 
+import enstudy.signup.domain.admin.dto.response.UserInfoResponse;
 import enstudy.signup.domain.user.dto.request.ChangePasswordRequest;
 import enstudy.signup.domain.user.dto.request.CheckEmailRequest;
 import enstudy.signup.domain.user.dto.request.LoginRequest;
@@ -77,5 +78,14 @@ public class UserService {
         // 업데이트 된 행이 없다면
         if(rows == 0)
             throw new UserException(UserErrorCode.PASSWORD_UPDATE_FAILURE);
+    }
+
+    @Transactional(readOnly = true)
+    public UserInfoResponse getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                // 해당 이메일(유저)이 존재하지 않는다면
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        return UserInfoResponse.from(user);
     }
 }

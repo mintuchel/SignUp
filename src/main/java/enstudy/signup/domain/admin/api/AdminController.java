@@ -29,13 +29,13 @@ public class AdminController {
     // 내가 만약 이 사람의 DB 내 고유 PK 값인 auto-increment 된 정수로 조회를 하는거면 @PathVariable이 맞지만 여기서는 내가 이메일로 검색을 하는 것이므로 ㅇㅇ
     // 아 근데 이메일은 unique 한 값이기도 하고 특정 리소스를 식별할 수 있는 값이니까 @PathVariable 로 해놓는다 그냥
     // auto-increment 인 PK 값으로 하면 전체 조회 때리고 자기 번호 찾아서 삭제해야하므로 번거로우니까 그냥 이메일로 바로 삭제가능하도록 함
-    @GetMapping("/user/{email}")
-    @Operation(summary = "특정 유저 조회")
-    public ResponseEntity<UserInfoResponse> getUserByEmail(@PathVariable String email) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(adminService.getUserByEmail(email));
-    }
+//    @GetMapping("/user/{email}")
+//    @Operation(summary = "특정 유저 조회")
+//    public ResponseEntity<UserInfoResponse> getUserByEmail(@PathVariable String email) {
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(adminService.getUserByEmail(email));
+//    }
 
     @GetMapping("/user")
     @Operation(summary = "모든 유저 조회")

@@ -1,5 +1,6 @@
 package enstudy.signup.domain.user.service;
 
+import enstudy.signup.domain.admin.dto.response.UserInfoResponse;
 import enstudy.signup.domain.user.dto.request.SignUpRequest;
 import enstudy.signup.domain.user.entity.User;
 import enstudy.signup.domain.user.repository.UserRepository;
@@ -16,6 +17,8 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
@@ -90,5 +93,21 @@ public class SignUpServiceTest {
         // then
         // 함수 미호출 여부 확인
         verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("특정 유저 조회 성공")
+    public void getUserByEmailSuccess(){
+        // given
+        String targetEmail = faker.internet().emailAddress();
+
+        given(user.getEmail()).willReturn(targetEmail);
+        given(userRepository.findByEmail(targetEmail)).willReturn(Optional.of(user));
+
+        // when
+        UserInfoResponse response = userService.getUserByEmail(targetEmail);
+
+        // then
+        Assertions.assertThat(response.email()).isEqualTo(targetEmail);
     }
 }

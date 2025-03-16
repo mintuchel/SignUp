@@ -40,22 +40,6 @@ public class AdminServiceTest {
     private final Faker faker = new Faker();
 
     @Test
-    @DisplayName("특정 유저 조회 성공")
-    public void getUserByEmailSuccess(){
-        // given
-        String targetEmail = faker.internet().emailAddress();
-
-        given(user1.getEmail()).willReturn(targetEmail);
-        given(userRepository.findByEmail(targetEmail)).willReturn(Optional.of(user1));
-
-        // when
-        UserInfoResponse response = adminService.getUserByEmail(targetEmail);
-
-        // then
-        Assertions.assertThat(response.email()).isEqualTo(targetEmail);
-    }
-
-    @Test
     @DisplayName("전체 유저 조회 성공")
     public void getUsersSuccess(){
         // given
