@@ -31,12 +31,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'net.datafaker:datafaker:2.4.2'
-	// implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.1'
+
+	implementation 'com.mysql:mysql-connector-j'
+
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+	// .env 파일을 통해 환경변수 설정을 하기 위해 의존성 등록
+	// Spring Boot는 .env 파일을 기본적으로 인식하지 않기 때문에, .env 파일을 로드하는 라이브러리가 필요
+	implementation("io.github.cdimascio:java-dotenv:5.2.2")
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
