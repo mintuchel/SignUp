@@ -1,6 +1,6 @@
 package enstudy.signup.domain.admin.api;
 
-import enstudy.signup.domain.admin.dto.response.UserInfoResponse;
+import enstudy.signup.domain.user.dto.response.UserInfoResponse;
 import enstudy.signup.domain.admin.service.AdminService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

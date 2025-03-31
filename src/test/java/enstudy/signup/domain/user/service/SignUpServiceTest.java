@@ -1,6 +1,6 @@
 package enstudy.signup.domain.user.service;
 
-import enstudy.signup.domain.admin.dto.response.UserInfoResponse;
+import enstudy.signup.domain.user.dto.response.UserInfoResponse;
 import enstudy.signup.domain.user.dto.request.SignUpRequest;
 import enstudy.signup.domain.user.entity.User;
 import enstudy.signup.domain.user.repository.UserRepository;
@@ -74,7 +74,6 @@ public class SignUpServiceTest {
         // 함수 호출 여부 확인
         verify(passwordEncoder).encode(signUpRequest.password());
         verify(userRepository).save(any(User.class));
-        System.out.println(id);
     }
 
     @Test

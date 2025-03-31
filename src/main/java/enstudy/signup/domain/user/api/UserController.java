@@ -1,6 +1,6 @@
 package enstudy.signup.domain.user.api;
 
-import enstudy.signup.domain.admin.dto.response.UserInfoResponse;
+import enstudy.signup.domain.user.dto.response.UserInfoResponse;
 import enstudy.signup.domain.user.dto.request.ChangePasswordRequest;
 import enstudy.signup.domain.user.dto.request.CheckEmailRequest;
 import enstudy.signup.domain.user.dto.request.LoginRequest;
