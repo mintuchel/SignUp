@@ -30,7 +30,7 @@ jobs:
 
           script: |
             
-            cd /home/ubuntu/SignUp
+            cd /home/ubuntu/signUp
             git pull origin main
             ./gradlew clean build
             sudo fuser -k -n tcp 8080 || true
