@@ -12,7 +12,7 @@ jobs:
     # ubuntu OS 에서 실행시키는 작업이다~
     runs-on: ubuntu-latest
     steps:
-      - name: Access EC2 by SSH Key
+      - name: set variables by github secrets and deploy on ec2
         uses: appleboy/ssh-action@v1.0.3
         with:
 
