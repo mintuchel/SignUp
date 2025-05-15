@@ -18,7 +18,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AdminService {
-    // 근데 지금 생각드는건데 왜 @RequiredArgsConstructor가 작동하려면 꼭 final로 정의해야하는걸까??
     private final UserRepository userRepository;
     private final EmailVerificationRepository emailVerificationRepository;
 

@@ -3,7 +3,7 @@ package enstudy.signup.domain.auth.dto.response;
 import enstudy.signup.domain.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-// responsedto에 정적 팩토리 메서드 사용
+// ResponseDTO에 정적 팩토리 메서드 사용
 // record 내부에 static으로 생성자같은 함수를 집어넣는 디자인 패턴
 // new 또는 builder를 사용하지 않는 패턴이다
 // 나도 지금은 개발하느라 왜 이런걸 쓰는지 이해는 안간다...
