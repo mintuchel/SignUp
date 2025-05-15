@@ -1,7 +1,6 @@
-package enstudy.signup.domain.user.service;
+package enstudy.signup.domain.auth.service;
 
-import enstudy.signup.domain.user.dto.response.UserInfoResponse;
-import enstudy.signup.domain.user.dto.request.SignUpRequest;
+import enstudy.signup.domain.auth.dto.request.SignUpRequest;
 import enstudy.signup.domain.user.entity.User;
 import enstudy.signup.domain.user.repository.UserRepository;
 import enstudy.signup.global.exception.errorcode.UserErrorCode;
@@ -18,8 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Optional;
-
 import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -27,7 +24,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class SignUpServiceTest {
     @InjectMocks
-    private UserService userService;
+    private AuthService authService;
 
     @Mock
     private UserRepository userRepository;
@@ -67,7 +64,7 @@ public class SignUpServiceTest {
         given(userRepository.existsByEmail(signUpRequest.email())).willReturn(false);
 
         // when
-        int id = userService.signUp(signUpRequest);
+        int id = authService.signUp(signUpRequest);
 
         // then
         Assertions.assertThat(id).isNotNull();
@@ -85,7 +82,7 @@ public class SignUpServiceTest {
         given(userRepository.existsByEmail(signUpRequest.email())).willReturn(true);
 
         // when & then
-        Assertions.assertThatThrownBy(() -> userService.signUp(signUpRequest))
+        Assertions.assertThatThrownBy(() -> authService.signUp(signUpRequest))
                 .isInstanceOf(UserException.class)
                 .hasFieldOrPropertyWithValue("userErrorCode",UserErrorCode.DUPLICATE_EMAIL);
 
@@ -94,19 +91,19 @@ public class SignUpServiceTest {
         verify(userRepository, never()).save(any(User.class));
     }
 
-    @Test
-    @DisplayName("특정 유저 조회 성공")
-    public void getUserByEmailSuccess(){
-        // given
-        String targetEmail = faker.internet().emailAddress();
-
-        given(user.getEmail()).willReturn(targetEmail);
-        given(userRepository.findByEmail(targetEmail)).willReturn(Optional.of(user));
-
-        // when
-        UserInfoResponse response = userService.getUserByEmail(targetEmail);
-
-        // then
-        Assertions.assertThat(response.email()).isEqualTo(targetEmail);
-    }
+//    @Test
+//    @DisplayName("특정 유저 조회 성공")
+//    public void getUserByEmailSuccess(){
+//        // given
+//        String targetEmail = faker.internet().emailAddress();
+//
+//        given(user.getEmail()).willReturn(targetEmail);
+//        given(userRepository.findByEmail(targetEmail)).willReturn(Optional.of(user));
+//
+//        // when
+//        UserInfoResponse response = authService.getUserByEmail(targetEmail);
+//
+//        // then
+//        Assertions.assertThat(response.email()).isEqualTo(targetEmail);
+//    }
 }

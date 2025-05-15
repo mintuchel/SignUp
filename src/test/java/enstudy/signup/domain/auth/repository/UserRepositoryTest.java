@@ -1,6 +1,7 @@
-package enstudy.signup.domain.user.repository;
+package enstudy.signup.domain.auth.repository;
 
 import enstudy.signup.domain.user.entity.User;
+import enstudy.signup.domain.user.repository.UserRepository;
 import net.datafaker.Faker;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,28 +40,4 @@ public class UserRepositoryTest {
 
         Assertions.assertThat(user.getId()).isNotNull();
     }
-
-//    @Test
-//    @Transactional
-//    public void changePasswordSuccess() {
-//        userRepository.save(user);
-//        userRepository.flush();
-//        System.out.println(user.getEmail());
-//        System.out.println(user.getPassword());
-//        System.out.println(user.getUsername());
-//        System.out.println(user.getDetailAddress());
-//
-//        String newPassword = faker.internet().password();
-//
-//        userRepository.updatePasswordByEmail(user.getEmail(), newPassword);
-//        userRepository.flush();
-//
-//        User updatedUser = userRepository.findByEmail(user.getEmail()).orElseThrow();
-//        System.out.println(updatedUser.getEmail());
-//        System.out.println(updatedUser.getPassword());
-//        System.out.println(updatedUser.getUsername());
-//        System.out.println(updatedUser.getDetailAddress());
-//
-//        Assertions.assertThat(updatedUser.getPassword()).isEqualTo(newPassword);
-//    }
 }

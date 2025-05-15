@@ -1,6 +1,6 @@
-package enstudy.signup.domain.user.service;
+package enstudy.signup.domain.auth.service;
 
-import enstudy.signup.domain.user.dto.request.LoginRequest;
+import enstudy.signup.domain.auth.dto.request.LoginRequest;
 import enstudy.signup.domain.user.entity.User;
 import enstudy.signup.domain.user.repository.UserRepository;
 import enstudy.signup.global.exception.errorcode.UserErrorCode;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class LoginServiceTest {
     @InjectMocks
-    private UserService userService;
+    private AuthService authService;
 
     @Mock
     private UserRepository userRepository;
@@ -76,7 +76,7 @@ public class LoginServiceTest {
         given(userRepository.findByEmail(loginRequest.email())).willReturn(Optional.of(user));
 
         // when
-        String name = userService.login(loginRequest).getUsername();
+        String name = authService.login(loginRequest).getUsername();
 
         // then
         Assertions.assertThat(name).isEqualTo(user.getUsername());
@@ -92,7 +92,7 @@ public class LoginServiceTest {
         given(userRepository.findByEmail(loginRequest.email())).willReturn(Optional.empty());
 
         // when & then
-        Assertions.assertThatThrownBy(() -> userService.login(loginRequest))
+        Assertions.assertThatThrownBy(() -> authService.login(loginRequest))
                 .isInstanceOf(UserException.class)
                 .hasFieldOrPropertyWithValue("userErrorCode", UserErrorCode.USER_NOT_FOUND);
 
@@ -110,7 +110,7 @@ public class LoginServiceTest {
         given(userRepository.findByEmail(loginRequest.email())).willReturn(Optional.of(user));
 
         // when & then
-        Assertions.assertThatThrownBy(() -> userService.login(loginRequest))
+        Assertions.assertThatThrownBy(() -> authService.login(loginRequest))
                 .isInstanceOf(UserException.class)
                 .hasFieldOrPropertyWithValue("userErrorCode", UserErrorCode.INVALID_PASSWORD);
 

@@ -1,6 +1,6 @@
 package enstudy.signup.domain.admin.service;
 
-import enstudy.signup.domain.user.dto.response.UserInfoResponse;
+import enstudy.signup.domain.auth.dto.response.UserInfoResponse;
 import enstudy.signup.domain.emailverification.entity.EmailVerification;
 import enstudy.signup.domain.emailverification.repository.EmailVerificationRepository;
 import enstudy.signup.domain.user.entity.User;
