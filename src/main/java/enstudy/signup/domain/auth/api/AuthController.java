@@ -1,10 +1,8 @@
-package enstudy.signup.domain.user.api;
+package enstudy.signup.domain.auth.api;
 
-import enstudy.signup.domain.user.dto.response.UserInfoResponse;
-import enstudy.signup.domain.user.dto.request.ChangePasswordRequest;
-import enstudy.signup.domain.user.dto.request.CheckEmailRequest;
-import enstudy.signup.domain.user.dto.request.LoginRequest;
-import enstudy.signup.domain.user.dto.request.SignUpRequest;
+import enstudy.signup.domain.auth.dto.request.*;
+import enstudy.signup.domain.auth.service.AuthService;
+import enstudy.signup.domain.auth.dto.response.UserInfoResponse;
 import enstudy.signup.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,14 +23,17 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/auth")
 @Tag(name = "회원가입/로그인 API", description = "박대원 김시원 신혜연 화이팅")
-public class UserController {
+public class AuthController {
+
+    private final AuthService authService;
     private final UserService userService;
 
-    @GetMapping("/{email}")
-    @Operation(summary = "특정 유저 조회")
-    public ResponseEntity<UserInfoResponse> getUserByEmail(@PathVariable String email) {
+    // jwt 안쓰는 상황에서는 이 api 만드는게 제일 애매함
+    @GetMapping("/me")
+    @Operation(summary = "특정 유저 정보 조회")
+    public ResponseEntity<UserInfoResponse> getUserInfo(@RequestParam String email) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.getUserByEmail(email));
@@ -43,7 +44,7 @@ public class UserController {
     public ResponseEntity<Integer> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(userService.signUp(signUpRequest));
+                .body(authService.signUp(signUpRequest));
     }
 
     @PostMapping("/email-check")
@@ -51,7 +52,7 @@ public class UserController {
     public ResponseEntity<String> checkIfEmailAvailable(@Valid @RequestBody CheckEmailRequest checkEmailRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.checkIfEmailAvailable(checkEmailRequest));
+                .body(authService.checkIfEmailAvailable(checkEmailRequest));
     }
 
     @PostMapping("/login")
@@ -59,7 +60,7 @@ public class UserController {
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.login(loginRequest).getUsername());
+                .body(authService.login(loginRequest).getUsername());
     }
 
     // RESTful 방식에서는 왜 noContent로 보내는 것이 적합하다고 하는 것일까
@@ -68,9 +69,11 @@ public class UserController {
     @PatchMapping("/password")
     @Operation(summary = "비밀번호 변경")
     public ResponseEntity<String> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
-        userService.changePassword(changePasswordRequest);
+        authService.changePassword(changePasswordRequest);
 
-        // HttpStatus 204로 반환
-        return ResponseEntity.noContent().build();
+        // 204 반환
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 }
