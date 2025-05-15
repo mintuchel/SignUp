@@ -14,7 +14,7 @@ import lombok.*;
 @Table(name = "email_verification")
 public class EmailVerification {
     @Id
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email")
     private String email;
 
     @Column(name = "verification_code", nullable = false)

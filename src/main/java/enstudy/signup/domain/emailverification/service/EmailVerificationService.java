@@ -4,6 +4,7 @@ import enstudy.signup.domain.emailverification.dto.VerificationCodeRequest;
 import enstudy.signup.domain.emailverification.dto.EmailVerificationRequest;
 import enstudy.signup.domain.emailverification.entity.EmailVerification;
 import enstudy.signup.domain.emailverification.repository.EmailVerificationRepository;
+import enstudy.signup.domain.emailverification.template.EmailTemplate;
 import enstudy.signup.global.exception.errorcode.EmailErrorCode;
 import enstudy.signup.global.exception.exception.EmailException;
 import jakarta.mail.MessagingException;
@@ -54,29 +55,13 @@ public class EmailVerificationService {
         return String.format("%06d", secureRandom.nextInt(1000000));
     }
 
-    // 생성된 인증코드를 바탕으로 실제로 메일을 보내주는 함수
     public void sendVerificationCodeMail(VerificationCodeRequest verificationCodeRequest, String createdCode){
-        String title = "En# SignUp 이메일 인증 번호";
-
-        String content = "<html>"
-                + "<body>"
-                + "<h1>이메일 인증 코드: " + createdCode + "</h1>"
-                + "<br>"
-                + "<p>해당 코드를 홈페이지에 입력하세요.</p>"
-                + "<footer style='color: grey; font-size: small;'>"
-                + "<p>※본 메일은 자동응답 메일이므로 본 메일에 회신하지 마시기 바랍니다.</p>"
-                + "</footer>"
-                + "</body>"
-                + "</html>";
-
         try {
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setTo(verificationCodeRequest.email());
-            helper.setSubject(title);
-            helper.setText(content, true);
-            helper.setReplyTo("ensharp@gmail.com");
-
+            helper.setSubject(EmailTemplate.VERIFICATION_MAIL_TITLE);
+            helper.setText(EmailTemplate.VERIFICATION_MAIL_CONTENT, true);
             emailSender.send(message);
         } catch (RuntimeException | MessagingException e) {
             // 메시지 전송 시 에러 터지면 서버 에러임
