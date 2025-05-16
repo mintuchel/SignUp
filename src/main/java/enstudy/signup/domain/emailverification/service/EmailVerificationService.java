@@ -61,7 +61,7 @@ public class EmailVerificationService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setTo(verificationCodeRequest.email());
             helper.setSubject(EmailTemplate.VERIFICATION_MAIL_TITLE);
-            helper.setText(EmailTemplate.VERIFICATION_MAIL_CONTENT, true);
+            helper.setText(String.format(EmailTemplate.VERIFICATION_MAIL_CONTENT, createdCode), true);
             emailSender.send(message);
         } catch (RuntimeException | MessagingException e) {
             // 메시지 전송 시 에러 터지면 서버 에러임
